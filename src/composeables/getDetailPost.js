@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from "@/services/apiClient";
 import { ref } from "vue";
 
 const getDetailPost = (id) => {
@@ -7,7 +7,7 @@ const getDetailPost = (id) => {
 
     const loadDetailPost = async () => {
         try {
-            let res = await axios.get(`http://localhost:3000/posts/${id}`)
+            let res = await apiClient.get(`/posts/${id}`)
             if(res.status == 200){
                 post.value = res.data
             }else{

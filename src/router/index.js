@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import DetailPost from '@/views/DetailPost.vue'
+import Categories from '@/views/Categories.vue'
 
 const routes = [
   {
@@ -13,7 +14,11 @@ const routes = [
     name: 'detail',
     component: DetailPost,
 	props: true
-  },
+  },{
+    path: '/categories',
+    name: 'category',
+    component: Categories
+  }
 ]
 
 const router = createRouter({
