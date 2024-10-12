@@ -20,13 +20,16 @@
 </template>
 
 <script>
-import getDetailPost from '@/composeables/getDetailPost';
+import usePostApi from '@/composeables/usePostApi';
+import { onMounted } from 'vue';
 export default {
     props : ['id'],
     setup(props){
-        const {post, error, loadDetailPost} = getDetailPost(props.id)
+        const {post, error, getDetailPost} = usePostApi()
 
-        loadDetailPost()
+        onMounted(() => {
+            getDetailPost(props.id)
+        });
 
         return {post, error}
     }

@@ -2,6 +2,9 @@
   <div class="home">
       <div class="container mt-5">
         <div class="row">
+			<div class="col-lg-12">
+				<router-link class="btn btn-success mb-3" :to="{name: 'entry'}">Make A Post</router-link>
+			</div>
             <div class="input-group mb-3">
                 <span class="input-group-text">Search</span>
                 <input class="form-control" placeholder="Search Here..." v-model="keyword">
@@ -19,17 +22,19 @@
 
 <script>
 import Post from '@/components/Post.vue';
-import getPosts from '@/composeables/getPosts';
-import { computed, ref, watch } from 'vue';
+import usePostApi from '@/composeables/usePostApi';
+import { computed, onMounted, ref, watch } from 'vue';
 
 export default {
   name: 'Home',
   components: {Post},
   setup() {
-    const { posts, errors, loadPosts } = getPosts()
+    const { posts, errors, getPosts } = usePostApi()
     const keyword = ref('')
 
-    loadPosts()
+    onMounted(() => {
+      getPosts()
+    })
   
     const matchPost = computed(() => {
         return posts.value.filter((post) => post.title.toLowerCase().includes(keyword.value.toLowerCase()))

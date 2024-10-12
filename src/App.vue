@@ -1,14 +1,17 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container">
-    <router-link class="navbar-brand" to="/">Vue Blog</router-link>
+    <a class="navbar-brand">Vue Blog</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <router-link class="nav-link" to="/categories">Categories</router-link>
+          <router-link :class="['nav-link', $route.name === 'home' ? 'active' : '']" :to="{name : 'home'}">Home</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :class="['nav-link', $route.name === 'category' ? 'active' : '']" :to="{name : 'category'}">Category</router-link>
         </li>
       </ul>
     </div>
