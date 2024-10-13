@@ -25,15 +25,17 @@
 <script>
 import { onMounted, ref } from 'vue';
 import usePostApi from '@/composeables/usePostApi';
+import useNotification from '@/composeables/useNotification';
 import { useRoute, useRouter } from 'vue-router'; 
 
 export default {
     name: 'Entry Post',
     setup(){
-        const {post, error, createPost, getDetailPost, } = usePostApi()
+        const { post, error, createPost, getDetailPost, updatePost } = usePostApi()
+        const { showSuccess, showError } = useNotification()
         const router = useRouter();
         const route = useRoute();
-        console.log(route.params.id || '0');
+
         const form = ref({
             'title' : '',
             'body' : '',
@@ -53,9 +55,19 @@ export default {
         })
 
         const handleSubmit = async () => {
-            const result = await createPost(form.value);
-            if(result){
-                router.push({name: 'home'})
+            let result, msg;
+            if(route.params.id){
+                result = await updatePost(form.value, route.params.id)
+            }else{
+                result = await createPost(form.value);
+            }
+
+            if(result.success){
+                showSuccess(result.message).then(() => {
+                    router.push({ name: 'home' });
+                })
+            }else{
+                showError(result.message)
             }
         }
 

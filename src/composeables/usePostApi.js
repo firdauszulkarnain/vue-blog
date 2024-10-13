@@ -37,26 +37,47 @@ const usePostApi = () => {
     const createPost = async (formData) => {
         try {
             let res = await apiClient.post('/posts', formData);
-            console.log('res', res)
-            return res.data;
+            if(res.status === 201){
+                return { success: true, message: 'Post created successfully!' };
+            }else{
+                throw new Error(`Unexpected response status: ${res.status}`);
+            }
         } catch (err) {
-            error.value = err.message
-            console.log(error.value)
+            const errMsg = err.message || 'An error occurred while creating the post';
+            return { success: false, message: errMsg };
+        }
+    }
+
+    const updatePost = async (formData, id) => {
+        try {
+            let res = await apiClient.put(`/posts/${id}`, formData)
+            if(res.status === 200){
+                return { success: true, message: 'Post updated successfully!' };
+            }else{
+                throw new Error(`Unexpected response status: ${res.status}`);
+            }
+        } catch (error) {
+            const errMsg = err.message || 'An error occurred while updating the post';
+            return { success: false, message: errMsg };
         }
     }
 
     const deletePost = async(id) => {
         try {
             let res = await apiClient.delete(`/posts/${id}`)
-            return res.data
+            if(res.status === 200){
+                return { success: true, message: 'Post deleted successfully!' };
+            }else{
+                throw new Error(`Unexpected response status: ${res.status}`);
+            }
         } catch (err) {
-            error.value = err.message
-            console.log(error.value)
+            const errMsg = err.message || 'An error occurred while deleted the post';
+            return { success: false, message: errMsg };
         }
     }
 
 
-    return {post, posts, error, getPosts, getDetailPost, createPost, deletePost }
+    return {post, posts, error, getPosts, getDetailPost, createPost, deletePost, updatePost }
 }
 
 export default usePostApi

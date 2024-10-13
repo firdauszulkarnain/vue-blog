@@ -16,22 +16,30 @@
 <script>
 import { computed } from 'vue';
 import usePostApi from '@/composeables/usePostApi';
+import useNotification from '@/composeables/useNotification';
 
 export default {
     props : ['post'],
     setup(props, {emit}){
 		const { deletePost } = usePostApi()
+        const { showConfirm, showSuccess, showError } = useNotification()
         const snippet = computed(() => {
             return props.post.body.substring(0, 200) + "..."
         })
 
 
 		const handleDelete = async () => {
-			const result = await deletePost(props.post.id)
-
-			if(result.status == 200){
-				emit('postDeleted', props.post.id);
-			}
+            const confirmed = await showConfirm()
+            if(confirmed){
+                const result = await deletePost(props.post.id)
+                if(result.success){
+                    showSuccess(result.message).then(() => {
+                        emit('postDeleted', props.post.id);
+                    })
+                }else{
+                    showError(result.message)
+                }
+            }
 		}
 
         return { snippet, handleDelete }
