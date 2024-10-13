@@ -13,7 +13,7 @@
                 Loading...
             </div>
             <div class="col-lg-6 mt-2" v-else v-for="post in matchPost" :key="post.id">
-                <Post :post="post"></Post>
+                <Post :post="post" @postDeleted="removePost"></Post>
             </div>
         </div>
       </div>
@@ -40,7 +40,11 @@ export default {
         return posts.value.filter((post) => post.title.toLowerCase().includes(keyword.value.toLowerCase()))
     })
 
-    return { posts, errors, matchPost, keyword }
+    const removePost = (postId) => {
+		posts.value = posts.value.filter(post => post.id !== postId);
+    };
+
+    return { posts, errors, matchPost, keyword, removePost }
   }
 }
 </script>

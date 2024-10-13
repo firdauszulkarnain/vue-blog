@@ -21,7 +21,6 @@ const usePostApi = () => {
     }
 
     const getDetailPost = async (id) => {
-        console.log('id',id)
         try {
             let res = await apiClient.get(`/posts/${id}`)
             if(res.status == 200){
@@ -46,8 +45,18 @@ const usePostApi = () => {
         }
     }
 
+    const deletePost = async(id) => {
+        try {
+            let res = await apiClient.delete(`/posts/${id}`)
+            return res.data
+        } catch (err) {
+            error.value = err.message
+            console.log(error.value)
+        }
+    }
 
-    return {post, posts, error, getPosts, getDetailPost, createPost }
+
+    return {post, posts, error, getPosts, getDetailPost, createPost, deletePost }
 }
 
 export default usePostApi

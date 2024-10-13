@@ -7,21 +7,34 @@
     </h6>
     <p class="card-text">{{ snippet }}</p>
     <router-link  class="btn btn-success btn-sm px-3" :to="{ name: 'detail', params: {id : post.id} }">Detail</router-link>
+	<router-link class="btn btn-sm btn-primary px-3 ms-1" :to="{ name : 'entry', params: {id: post.id}}">Update</router-link>
+    <button class="btn btn-sm btn-danger px-3 ms-1" @click="handleDelete">Delete</button>
   </div>
 </div>
 </template>
 
 <script>
 import { computed } from 'vue';
+import usePostApi from '@/composeables/usePostApi';
 
 export default {
     props : ['post'],
-    setup(props){
+    setup(props, {emit}){
+		const { deletePost } = usePostApi()
         const snippet = computed(() => {
             return props.post.body.substring(0, 200) + "..."
         })
 
-        return { snippet }
+
+		const handleDelete = async () => {
+			const result = await deletePost(props.post.id)
+
+			if(result.status == 200){
+				emit('postDeleted', props.post.id);
+			}
+		}
+
+        return { snippet, handleDelete }
     }
 }
 </script>

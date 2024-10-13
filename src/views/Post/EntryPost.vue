@@ -23,15 +23,17 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import usePostApi from '@/composeables/usePostApi';
-import { useRouter } from 'vue-router'; 
+import { useRoute, useRouter } from 'vue-router'; 
 
 export default {
     name: 'Entry Post',
     setup(){
-        const {error, createPost} = usePostApi()
+        const {post, error, createPost, getDetailPost, } = usePostApi()
         const router = useRouter();
+        const route = useRoute();
+        console.log(route.params.id || '0');
         const form = ref({
             'title' : '',
             'body' : '',
@@ -42,6 +44,14 @@ export default {
             'tags': ["Programming", "Web"]
         })
 
+        onMounted(async () => {
+            if(route.params.id){
+                await getDetailPost(route.params.id)
+                form.value.title = post.value.title
+                form.value.body = post.value.body
+            }
+        })
+
         const handleSubmit = async () => {
             const result = await createPost(form.value);
             if(result){
@@ -49,7 +59,7 @@ export default {
             }
         }
 
-        return {form, handleSubmit, error}
+        return {form, handleSubmit, error, post}
     }
 }
 </script>

@@ -17,7 +17,7 @@ const routes = [
 	  props: true
   },
   {
-    path: '/entry-post',
+    path: '/entry-post/:id?',
     name: 'entry',
     component: EntryPost,
   },{
