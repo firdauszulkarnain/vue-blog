@@ -2,7 +2,7 @@
   <div class="card">
   <div class="card-body">
     <h5 class="card-title">{{ post.title }}</h5>
-    <h6 class="card-subtitle mb-2 badge text-bg-success me-1" v-for="tag in post.tags" :key="tag">
+    <h6 class="card-subtitle mb-2 badge text-bg-success me-1 text-capitalize" v-for="tag in post.tags" :key="tag">
         #{{ tag }}
     </h6>
     <p class="card-text">{{ snippet }}</p>

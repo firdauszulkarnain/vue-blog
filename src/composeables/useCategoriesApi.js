@@ -1,7 +1,7 @@
 import apiClient from "@/services/apiClient";
 import { ref } from "vue";
 
-const categories = () => {
+const useCategoriesApi = () => {
     const categories = ref([])
     const errors = ref(null)
 
@@ -22,4 +22,4 @@ const categories = () => {
     return {categories, errors, getCategories}
 }
 
-export default categories
+export default useCategoriesApi
